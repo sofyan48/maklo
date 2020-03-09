@@ -1,3 +1,5 @@
 .env
 go.sum
 .env-*
+main
+result

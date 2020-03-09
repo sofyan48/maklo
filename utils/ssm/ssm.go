@@ -10,7 +10,7 @@ import (
 )
 
 // GeneralParametersByPath ...
-func GeneralParametersByPath(stage, path string) {
+func GeneralParametersByPath(appname, stage, path string) {
 	svc := aws.GetSSM()
 	input := &ssm.GetParametersByPathInput{}
 	input.SetPath(path)
@@ -19,7 +19,7 @@ func GeneralParametersByPath(stage, path string) {
 		log.Println(err)
 		os.Exit(0)
 	}
-	file := tool.Storage(stage)
+	file := tool.Storage(stage, appname)
 	for _, i := range data.Parameters {
 		name := tool.GeneralSplit(*i.Name)
 		format := name + "=$(aws ssm get-parameter --name " + *i.Name + " --query  \"Parameter.{Value:Value}\"| grep Value | awk -F '\"' '{print $4}')\n"
