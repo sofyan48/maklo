@@ -55,6 +55,7 @@ func main() {
 			if Args.Decryption == "true" {
 				decrypt = true
 			}
+			fmt.Println("Decryption: ", decrypt)
 			ssm.GeneralParametersByPath(Args.Name, Args.Stage, "/rll/"+Args.Stage+"/"+Args.Type+"/"+Args.Name, decrypt)
 			return nil
 		},
