@@ -1,6 +1,8 @@
 package ssm
 
 import (
+	"encoding/json"
+	"io/ioutil"
 	"log"
 	"os"
 
@@ -9,8 +11,15 @@ import (
 	"github.com/sofyan48/ssm_go/utils/tool"
 )
 
+// InsertDataModels ...
+type InsertDataModels struct {
+	Name      string
+	Value     string
+	IsEncrypt bool
+}
+
 // GeneralParametersByPath ...
-func GeneralParametersByPath(appname, stage, path string, decryption bool) {
+func GeneralParametersByPath(appname, stage, path string, decryption bool) error {
 	svc := aws.GetSSM()
 	input := &ssm.GetParametersByPathInput{}
 	input.SetPath(path)
@@ -18,19 +27,68 @@ func GeneralParametersByPath(appname, stage, path string, decryption bool) {
 	data, err := svc.GetParametersByPath(input)
 	if err != nil {
 		log.Println("Error: ", err)
-		os.Exit(0)
+		return err
 	}
 	// fmt.Println("Data: ", data.String())
 	file := tool.Storage(stage, appname)
 	for _, i := range data.Parameters {
-		name := tool.GeneralSplit(*i.Name)
-		format := ""
-		if decryption {
-			format = name + "=$(aws ssm get-parameter --name " + *i.Name + " --query  \"Parameter.{Value:Value}\" --with-decryption | grep Value | awk -F '\"' '{print $4}')\n"
-		} else {
-			format = name + "=$(aws ssm get-parameter --name " + *i.Name + " --query  \"Parameter.{Value:Value}\"| grep Value | awk -F '\"' '{print $4}')\n"
+		GenerateJSON(*i.Name, decryption, file)
+	}
+	return nil
+}
 
+// GenerateJSON ...
+func GenerateJSON(pathName string, decryption bool, file *os.File) (int, error) {
+	name := tool.GeneralSplit(pathName)
+	format := ""
+	if decryption {
+		format = name + "=$(aws ssm get-parameter --name " + pathName + " --query  \"Parameter.{Value:Value}\" --with-decryption | grep Value | awk -F '\"' '{print $4}')\n"
+	} else {
+		format = name + "=$(aws ssm get-parameter --name " + pathName + " --query  \"Parameter.{Value:Value}\"| grep Value | awk -F '\"' '{print $4}')\n"
+
+	}
+	return file.Write([]byte(format))
+}
+
+// InsertParametersByPath ...
+func InsertParametersByPath(path string) error {
+	jsonFile, err := os.Open(path)
+	if err != nil {
+		log.Println("Error: ", err)
+		return err
+	}
+
+	byteValue, err := ioutil.ReadAll(jsonFile)
+	if err != nil {
+		log.Println("Error: ", err)
+		return err
+	}
+	dataJSON := []InsertDataModels{}
+	err = json.Unmarshal(byteValue, &dataJSON)
+	if err != nil {
+		return err
+	}
+	InsertParameter(dataJSON)
+	return nil
+}
+
+// InsertParameter ...
+func InsertParameter(dataJSON []InsertDataModels) {
+	svc := aws.GetSSM()
+	for _, i := range dataJSON {
+		inputFormat := &ssm.PutParameterInput{}
+		inputFormat.SetName(i.Name)
+		inputFormat.SetValue(i.Value)
+		if i.IsEncrypt {
+			inputFormat.SetType("SecureString")
+		} else {
+			inputFormat.SetType("String")
 		}
-		file.Write([]byte(format))
+
+		result, err := svc.PutParameter(inputFormat)
+		if err != nil {
+			log.Println("Not Uploaded Parameter: ", err)
+		}
+		log.Println("Uploaded Parameter: ", result)
 	}
 }
