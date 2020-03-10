@@ -13,10 +13,20 @@ cp .env.example .env
 
 ## Usage
 Note: ***Run the app one place with environtment***
+### Generate Parameters
 ```
-./main -n $APP_NAME -s $STAGE -t $TYPE
+maklo generate -p /rll/dev/general/sdk_js -name sdk_js -s dev -d true
 ```
-- APP_NAME e.g core-api
-- STAGE e.g dev
-- $TYPE e.g secret or general
+Option:
+--path value, -p value       File Template Path
+--name value, -n value       App Name
+--stage value, -s value      Stage Parameters
+--decrypt value, -d value    Decryption Option
 
+### Insert Paramters
+```
+maklo insert -p templates/parameters.json
+```
+OPTIONS:
+--path value, -p value       File Template Path
+--overwrite value, -w value  Overwirte Option

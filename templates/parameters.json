@@ -1,0 +1,12 @@
+[
+    {
+        "Name":"/app/dev/general/testings/APP_ENV",
+        "Value": "development",
+        "IsEncrypt": false
+    },
+    {
+        "Name":"/app/dev/general/testings/TIME_ZONE",
+        "Value": "Asia/Jakarta",
+        "IsEncrypt": false
+    }
+]

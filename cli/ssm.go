@@ -9,7 +9,7 @@ import (
 func Generate() cli.Command {
 	command := cli.Command{}
 	command.Name = "generate"
-	command.Usage = "generate [command]"
+	command.Usage = "generate [option]"
 	command.Flags = []cli.Flag{
 		cli.StringFlag{
 			Name:        "path, p",
@@ -49,13 +49,14 @@ func Generate() cli.Command {
 // InsertParameter ..
 func InsertParameter() cli.Command {
 	command := cli.Command{}
-	command.Name = "generate"
-	command.Usage = "generate [command]"
+	command.Name = "insert"
+	command.Usage = "insert [Option]"
 	command.Flags = []cli.Flag{
 		cli.StringFlag{
 			Name:        "path, p",
 			Usage:       "File Template Path",
 			Destination: &Args.TemplatePath,
+			Required:    true,
 		},
 		cli.StringFlag{
 			Name:        "overwrite, w",
