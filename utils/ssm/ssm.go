@@ -7,8 +7,8 @@ import (
 	"os"
 
 	"github.com/aws/aws-sdk-go/service/ssm"
-	"github.com/sofyan48/ssm_go/utils/aws"
-	"github.com/sofyan48/ssm_go/utils/tool"
+	"github.com/sofyan48/maklo/utils/aws"
+	"github.com/sofyan48/maklo/utils/tool"
 )
 
 // InsertDataModels ...

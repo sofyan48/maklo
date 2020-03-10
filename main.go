@@ -4,7 +4,7 @@ import (
 	"os"
 
 	"github.com/joho/godotenv"
-	"github.com/sofyan48/ssm_go/cli"
+	"github.com/sofyan48/maklo/cli"
 )
 
 func main() {

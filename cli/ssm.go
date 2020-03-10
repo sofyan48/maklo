@@ -1,7 +1,7 @@
 package cli
 
 import (
-	"github.com/sofyan48/ssm_go/utils/ssm"
+	"github.com/sofyan48/maklo/utils/ssm"
 	"github.com/urfave/cli"
 )
 
