@@ -10,13 +10,16 @@ import (
 )
 
 // GeneralParametersByPath ...
-func GeneralParametersByPath(appname, stage, path string) {
+func GeneralParametersByPath(appname, stage, path string, decryption bool) {
 	svc := aws.GetSSM()
 	input := &ssm.GetParametersByPathInput{}
 	input.SetPath(path)
+	if decryption {
+		input.SetWithDecryption(true)
+	}
 	data, err := svc.GetParametersByPath(input)
 	if err != nil {
-		log.Println(err)
+		log.Println("Error: ", err)
 		os.Exit(0)
 	}
 	file := tool.Storage(stage, appname)

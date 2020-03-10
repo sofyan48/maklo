@@ -11,9 +11,10 @@ import (
 )
 
 type ArgsMapping struct {
-	Name  string
-	Stage string
-	Type  string
+	Name       string
+	Stage      string
+	Type       string
+	Decryption string
 }
 
 // Args ...
@@ -39,13 +40,22 @@ func main() {
 				Usage:       "--type | -t ",
 				Destination: &Args.Type,
 			},
+			&cli.StringFlag{
+				Name:        "decryption, d",
+				Usage:       "--decryption | -d ",
+				Destination: &Args.Decryption,
+			},
 		},
 		Action: func(c *cli.Context) error {
 			if Args.Name == "" || Args.Stage == "" || Args.Type == "" {
 				fmt.Println("Setting Name, Stage AND Type")
 				os.Exit(0)
 			}
-			ssm.GeneralParametersByPath(Args.Name, Args.Stage, "/rll/"+Args.Stage+"/"+Args.Type+"/"+Args.Name)
+			decrypt := false
+			if Args.Decryption == "true" {
+				decrypt = true
+			}
+			ssm.GeneralParametersByPath(Args.Name, Args.Stage, "/rll/"+Args.Stage+"/"+Args.Type+"/"+Args.Name, decrypt)
 			return nil
 		},
 	}

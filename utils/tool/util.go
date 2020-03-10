@@ -1,6 +1,7 @@
 package tool
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"strings"
@@ -12,7 +13,7 @@ func Storage(stage, appname string) *os.File {
 		os.MkdirAll("./result/"+appname, 0777)
 	}
 	fileName := "./result/" + appname + "/.env-" + stage
-	f, err := os.Create(fileName)
+	f, err := os.OpenFile(fileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0777)
 	if err != nil {
 		log.Println(err)
 		f.Close()
@@ -23,6 +24,7 @@ func Storage(stage, appname string) *os.File {
 
 // GeneralSplit ...
 func GeneralSplit(envPath string) string {
+	fmt.Println("path: ", envPath)
 	data := strings.SplitN(envPath, "/", -1)
 	result := data[len(data)-1]
 	return result
