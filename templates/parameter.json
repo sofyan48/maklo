@@ -1,0 +1,21 @@
+{
+    "stage": "dev",
+    "name": "sdk_js",
+    "parameters": [
+      {
+        "path": "rll/dev/general/sdk_js/TIME_ZONE",
+        "value": "Asia/Jakarta",
+        "isEncrypt": false
+      },
+      {
+        "path": "rll/dev/secret/sdk_js/database/DB_PASSWORD",
+        "value": "Asia/Jakarta",
+        "isEncrypt": true
+      },
+      {
+        "path": "rll/dev/secret/sdk_js/APP_NAME",
+        "value": "SDK_JS",
+        "isEncrypt": true
+      }
+    ]
+  }

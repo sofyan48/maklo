@@ -1,10 +1,15 @@
 package tool
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
 	"strings"
+
+	"github.com/sofyan48/maklo/entity"
+	"gopkg.in/yaml.v2"
 )
 
 // Storage ...
@@ -28,4 +33,41 @@ func GeneralSplit(envPath string) string {
 	data := strings.SplitN(envPath, "/", -1)
 	result := data[len(data)-1]
 	return result
+}
+
+// ParsingYAML ...
+func ParsingYAML(path string) (*entity.TemplatesModels, error) {
+	yamlObject := &entity.TemplatesModels{}
+	ymlFile, err := ioutil.ReadFile(path)
+	if err != nil {
+		return yamlObject, err
+	}
+	err = yaml.Unmarshal(ymlFile, yamlObject)
+	if err != nil {
+		return yamlObject, err
+	}
+	return yamlObject, nil
+}
+
+// ParsingJSON ...
+func ParsingJSON(path string) (*entity.TemplatesModels, error) {
+	jsonObject := &entity.TemplatesModels{}
+	ymlFile, err := ioutil.ReadFile(path)
+	if err != nil {
+		return jsonObject, err
+	}
+	err = json.Unmarshal(ymlFile, jsonObject)
+	if err != nil {
+		return jsonObject, err
+	}
+	return jsonObject, nil
+}
+
+// CheckFile ...
+func CheckFile(path string) bool {
+	if _, err := os.Stat(path); os.IsNotExist(err) {
+		log.Fatal(err)
+		return false
+	}
+	return true
 }

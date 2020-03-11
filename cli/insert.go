@@ -22,9 +22,14 @@ func InsertParameter() cli.Command {
 			Usage:       "Overwirte Option",
 			Destination: &Args.Decryption,
 		},
+		cli.StringFlag{
+			Name:        "format, f",
+			Usage:       "Format Type Templates Option",
+			Destination: &Args.Type,
+		},
 	}
 	command.Action = func(c *cli.Context) error {
-		return ssm.InsertParametersByPath(Args.TemplatePath)
+		return ssm.InsertParametersByPath(Args.TemplatePath, Args.Type)
 	}
 
 	return command

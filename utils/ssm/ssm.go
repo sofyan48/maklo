@@ -1,22 +1,14 @@
 package ssm
 
 import (
-	"encoding/json"
-	"io/ioutil"
 	"log"
 	"os"
 
 	"github.com/aws/aws-sdk-go/service/ssm"
+	"github.com/sofyan48/maklo/entity"
 	"github.com/sofyan48/maklo/utils/aws"
 	"github.com/sofyan48/maklo/utils/tool"
 )
-
-// InsertDataModels ...
-type InsertDataModels struct {
-	Name      string
-	Value     string
-	IsEncrypt bool
-}
 
 // GeneralParametersByPath ...
 func GeneralParametersByPath(appname, stage, path string, decryption bool) error {
@@ -51,33 +43,23 @@ func GenerateJSON(pathName string, decryption bool, file *os.File) (int, error) 
 }
 
 // InsertParametersByPath ...
-func InsertParametersByPath(path string) error {
-	jsonFile, err := os.Open(path)
-	if err != nil {
-		log.Println("Error: ", err)
-		return err
+func InsertParametersByPath(path, types string) error {
+	data := &entity.TemplatesModels{}
+	if types == "json" {
+		data, _ = tool.ParsingJSON(path)
+	} else {
+		data, _ = tool.ParsingYAML(path)
 	}
-
-	byteValue, err := ioutil.ReadAll(jsonFile)
-	if err != nil {
-		log.Println("Error: ", err)
-		return err
-	}
-	dataJSON := []InsertDataModels{}
-	err = json.Unmarshal(byteValue, &dataJSON)
-	if err != nil {
-		return err
-	}
-	InsertParameter(dataJSON)
+	InsertParameter(data.Parameters)
 	return nil
 }
 
 // InsertParameter ...
-func InsertParameter(dataJSON []InsertDataModels) {
+func InsertParameter(dataJSON []entity.InsertDataModels) {
 	svc := aws.GetSSM()
 	for _, i := range dataJSON {
 		inputFormat := &ssm.PutParameterInput{}
-		inputFormat.SetName(i.Name)
+		inputFormat.SetName(i.Path)
 		inputFormat.SetValue(i.Value)
 		if i.IsEncrypt {
 			inputFormat.SetType("SecureString")

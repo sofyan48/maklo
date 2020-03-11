@@ -1,0 +1,12 @@
+stage: dev
+name: testing_ssm
+parameters:
+    - path: /rll/dev/general/testing_ssm/TIME_ZONE
+      value: Asia/Jakarta
+      isEncrypt: false
+    - path: /rll/dev/secret/testing_ssm/database/DB_PASSWORD
+      value: Asia/Jakarta
+      isEncrypt: true
+    - path: /rll/dev/secret/testing_ssm/APP_NAME
+      value: SDK_JS
+      isEncrypt: false
