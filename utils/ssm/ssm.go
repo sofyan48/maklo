@@ -1,7 +1,6 @@
 package ssm
 
 import (
-	"fmt"
 	"log"
 	"os"
 
@@ -12,14 +11,17 @@ import (
 )
 
 // GenerateByTemplates ...
-func GenerateByTemplates(path, types string, decryption bool) error {
+func GenerateByTemplates(path, types string) error {
 	data := &entity.TemplatesModels{}
 	if types == "json" {
 		data, _ = tool.ParsingJSON(path)
 	} else {
 		data, _ = tool.ParsingYAML(path)
 	}
-	fmt.Println(data)
+	file := tool.Storage(data.Stage, data.Name)
+	for _, i := range data.Parameters {
+		GenerateJSON(i.Path, i.IsEncrypt, file)
+	}
 	return nil
 }
 

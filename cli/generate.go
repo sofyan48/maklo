@@ -21,18 +21,9 @@ func Generate() cli.Command {
 			Usage:       "Templates Formats | yaml or json",
 			Destination: &Args.Path,
 		},
-		cli.StringFlag{
-			Name:        "decrypt, d",
-			Usage:       "Decryption Option",
-			Destination: &Args.Decryption,
-		},
 	}
 	command.Action = func(c *cli.Context) error {
-		decrypt := false
-		if Args.Decryption != "" {
-			decrypt = true
-		}
-		return ssm.GenerateByTemplates(Args.Path, Args.Type, decrypt)
+		return ssm.GenerateByTemplates(Args.Path, Args.Type)
 	}
 
 	return command
