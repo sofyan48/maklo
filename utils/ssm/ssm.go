@@ -1,6 +1,7 @@
 package ssm
 
 import (
+	"fmt"
 	"log"
 	"os"
 
@@ -9,6 +10,18 @@ import (
 	"github.com/sofyan48/maklo/utils/aws"
 	"github.com/sofyan48/maklo/utils/tool"
 )
+
+// GenerateByTemplates ...
+func GenerateByTemplates(path, types string, decryption bool) error {
+	data := &entity.TemplatesModels{}
+	if types == "json" {
+		data, _ = tool.ParsingJSON(path)
+	} else {
+		data, _ = tool.ParsingYAML(path)
+	}
+	fmt.Println(data)
+	return nil
+}
 
 // GeneralParametersByPath ...
 func GeneralParametersByPath(appname, stage, path string, decryption bool) error {
