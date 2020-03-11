@@ -15,6 +15,7 @@ func Generate() cli.Command {
 			Name:        "path, p",
 			Usage:       "Templates Path",
 			Destination: &Args.Path,
+			Required:    true,
 		},
 		cli.StringFlag{
 			Name:        "format, f",

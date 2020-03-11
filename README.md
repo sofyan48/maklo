@@ -13,9 +13,9 @@ cp .env.example .env
 
 ## Usage
 Note: ***Run the app one place with environtment***
-### Generate Parameters
+### GeneratePath Parameters
 ```
-maklo generate -p /rll/dev/general/sdk_js -name sdk_js -s dev -d true
+maklo generatePath -p /rll/dev/general/sdk_js -name sdk_js -s dev -d true
 ```
 OPTIONS:
 ```
@@ -33,4 +33,14 @@ OPTIONS:
 ```
 --path value, -p value       File Template Path
 --overwrite value, -w value  Overwirte Option
+```
+
+### Generate By Templates
+```
+maklo generate -f yaml -p templates/parameter.yaml
+```
+OPTIONS:
+```
+--path value, -p value    Templates Path
+--format value, -f value  Templates Formats | yaml or json
 ```
