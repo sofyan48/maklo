@@ -25,6 +25,17 @@ func GenerateByTemplates(path, types string) error {
 	return nil
 }
 
+// DeleteParameterByTemplate ...
+func DeleteParameterByTemplate(path, types string) {
+	data := &entity.TemplatesModels{}
+	if types == "json" {
+		data, _ = tool.ParsingJSON(path)
+	} else {
+		data, _ = tool.ParsingYAML(path)
+	}
+	DeleteParameter(data.Parameters)
+}
+
 // GeneralParametersByPath ...
 func GeneralParametersByPath(appname, stage, path string, decryption bool) error {
 	svc := aws.GetSSM()
@@ -114,4 +125,19 @@ func InsertParameter(dataJSON []entity.InsertDataModels, overwrite bool) {
 		}
 		log.Println("Uploaded Parameter: ", result)
 	}
+}
+
+// DeleteParameter ..
+func DeleteParameter(dataJSON []entity.InsertDataModels) {
+	svc := aws.GetSSM()
+	for _, i := range dataJSON {
+		inputFormat := &ssm.DeleteParameterInput{}
+		inputFormat.SetName(i.Path)
+		result, err := svc.DeleteParameter(inputFormat)
+		if err != nil {
+			log.Println("Not Deleted Parameter: ", err)
+		}
+		log.Println("Deleted Parameter: ", result)
+	}
+
 }

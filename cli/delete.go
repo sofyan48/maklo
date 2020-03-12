@@ -5,11 +5,11 @@ import (
 	"github.com/urfave/cli"
 )
 
-// Generate ...
-func Generate() cli.Command {
+// Deleted ...
+func Deleted() cli.Command {
 	command := cli.Command{}
-	command.Name = "generate"
-	command.Usage = "generate [option]"
+	command.Name = "delete"
+	command.Usage = "delete [option]"
 	command.Flags = []cli.Flag{
 		cli.StringFlag{
 			Name:        "path, p",
@@ -24,7 +24,8 @@ func Generate() cli.Command {
 		},
 	}
 	command.Action = func(c *cli.Context) error {
-		return ssm.GenerateByTemplates(Args.Path, Args.Type)
+		ssm.DeleteParameterByTemplate(Args.Path, Args.Type)
+		return nil
 	}
 	return command
 }

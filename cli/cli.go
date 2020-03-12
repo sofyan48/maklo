@@ -36,6 +36,7 @@ func AppCommands() *cli.App {
 		Generate(),
 		InsertParameter(),
 		GeneratePath(),
+		Deleted(),
 	}
 	return app
 }
