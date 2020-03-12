@@ -36,7 +36,6 @@ func GeneralParametersByPath(appname, stage, path string, decryption bool) error
 		log.Println("Error: ", err)
 		return err
 	}
-	// fmt.Println("Data: ", data.String())
 	file := tool.Storage(stage, appname)
 	for _, i := range data.Parameters {
 		GenerateJSON(*i.Name, decryption, file)
