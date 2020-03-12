@@ -29,6 +29,7 @@ func InsertParameter() cli.Command {
 		},
 	}
 	command.Action = func(c *cli.Context) error {
+		initEnvirontment()
 		overwrites := false
 		if Args.OverWrites != "" {
 			overwrites = true

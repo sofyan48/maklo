@@ -41,8 +41,8 @@ func GeneratePath() cli.Command {
 		},
 	}
 	command.Action = func(c *cli.Context) error {
+		initEnvirontment()
 		cmdHandler := cmd.CMDLibraryHandler()
-
 		decrypt := false
 		if Args.Decryption != "" {
 			decrypt = true

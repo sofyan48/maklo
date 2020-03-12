@@ -24,6 +24,7 @@ func Deleted() cli.Command {
 		},
 	}
 	command.Action = func(c *cli.Context) error {
+		initEnvirontment()
 		cmdHandler := cmd.CMDLibraryHandler()
 		cmdHandler.DeleteParameterByTemplate(Args.Path, Args.Type)
 		return nil

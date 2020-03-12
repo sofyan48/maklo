@@ -24,6 +24,7 @@ func Generate() cli.Command {
 		},
 	}
 	command.Action = func(c *cli.Context) error {
+		initEnvirontment()
 		cmdHandler := cmd.CMDLibraryHandler()
 		return cmdHandler.GenerateByTemplates(Args.Path, Args.Type)
 	}

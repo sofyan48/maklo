@@ -29,6 +29,7 @@ type ToolsInterface interface {
 	CheckFile(path string) bool
 	GenerateAWK(pathName string, decryption bool, file *os.File) (int, error)
 	GenerateDotEnvirontment(pathName string, file *os.File) (int, error)
+	CreateFolder(path string) error
 }
 
 // GenerateAWK ...
@@ -64,6 +65,14 @@ func (tl *Tools) Storage(stage, appname string) *os.File {
 		os.Exit(0)
 	}
 	return file
+}
+
+// CreateFolder ...
+func (tl *Tools) CreateFolder(path string) error {
+	if _, err := os.Stat(path); os.IsNotExist(err) {
+		return err
+	}
+	return os.MkdirAll(path, 0777)
 }
 
 // GeneralSplit ...

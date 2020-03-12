@@ -1,6 +1,9 @@
 package cli
 
 import (
+	"os"
+
+	"github.com/sofyan48/maklo/libs/cmd"
 	"github.com/urfave/cli"
 )
 
@@ -13,6 +16,7 @@ type ArgsMapping struct {
 	Type         string
 	Decryption   string
 	OverWrites   string
+	Environment  string
 }
 
 // Args ...
@@ -26,6 +30,14 @@ func Init() *cli.App {
 	app.Author = "sofyan48"
 	app.Email = "meongbego@gmail.com"
 	app.Version = "0.0.1"
+	app.Flags = []cli.Flag{
+		cli.StringFlag{
+			Name:        "environtment, e",
+			Usage:       "Load Environtment from path",
+			Destination: &Args.Environment,
+		},
+	}
+
 	return app
 }
 
@@ -39,4 +51,15 @@ func AppCommands() *cli.App {
 		Deleted(),
 	}
 	return app
+}
+
+func initEnvirontment() {
+	cmdHandler := cmd.CMDLibraryHandler()
+	if Args.Environment == "" {
+		cmdHandler.CreateEnvironment()
+		cmdHandler.LoadEnvironment(os.UserHomeDir() + "/.maklo/environtment")
+		return
+	}
+	cmdHandler.LoadEnvironment(Args.Environment)
+	return
 }
