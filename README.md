@@ -8,7 +8,17 @@ go build -o maklo
 
 ## Setting Environtment
 ```
-cp .env.example .env
+nano $USER/.maklo/environtment
+```
+Set environtment value
+```
+AWS_ACCESS_KEY=
+AWS_ACCESS_SECRET=
+AWS_ACCESS_AREA=ap-southeast-1
+```
+or load environtment by path
+```
+maklo -e path/environtment [action] [option]
 ```
 
 ## Usage
