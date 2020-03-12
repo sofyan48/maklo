@@ -85,30 +85,30 @@ func GenerateEnvirontment(pathName, value string, decryption bool, file *os.File
 }
 
 // InsertParametersByPath ...
-func InsertParametersByPath(path, types string) error {
+func InsertParametersByPath(path, types string, overwrite bool) error {
 	data := &entity.TemplatesModels{}
 	if types == "json" {
 		data, _ = tool.ParsingJSON(path)
 	} else {
 		data, _ = tool.ParsingYAML(path)
 	}
-	InsertParameter(data.Parameters)
+	InsertParameter(data.Parameters, overwrite)
 	return nil
 }
 
 // InsertParameter ...
-func InsertParameter(dataJSON []entity.InsertDataModels) {
+func InsertParameter(dataJSON []entity.InsertDataModels, overwrite bool) {
 	svc := aws.GetSSM()
 	for _, i := range dataJSON {
 		inputFormat := &ssm.PutParameterInput{}
 		inputFormat.SetName(i.Path)
 		inputFormat.SetValue(i.Value)
+		inputFormat.SetOverwrite(overwrite)
 		if i.IsEncrypt {
 			inputFormat.SetType("SecureString")
 		} else {
 			inputFormat.SetType("String")
 		}
-
 		result, err := svc.PutParameter(inputFormat)
 		if err != nil {
 			log.Println("Not Uploaded Parameter: ", err)

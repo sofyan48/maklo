@@ -20,7 +20,7 @@ func InsertParameter() cli.Command {
 		cli.StringFlag{
 			Name:        "overwrite, w",
 			Usage:       "Overwirte Option",
-			Destination: &Args.Decryption,
+			Destination: &Args.OverWrites,
 		},
 		cli.StringFlag{
 			Name:        "format, f",
@@ -29,7 +29,11 @@ func InsertParameter() cli.Command {
 		},
 	}
 	command.Action = func(c *cli.Context) error {
-		return ssm.InsertParametersByPath(Args.TemplatePath, Args.Type)
+		overwrites := false
+		if Args.OverWrites != "" {
+			overwrites = true
+		}
+		return ssm.InsertParametersByPath(Args.TemplatePath, Args.Type, overwrites)
 	}
 
 	return command

@@ -12,6 +12,7 @@ type ArgsMapping struct {
 	Stage        string
 	Type         string
 	Decryption   string
+	OverWrites   string
 }
 
 // Args ...
