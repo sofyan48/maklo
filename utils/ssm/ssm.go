@@ -44,6 +44,25 @@ func GeneralParametersByPath(appname, stage, path string, decryption bool) error
 	return nil
 }
 
+// GeneralParametersToEnvirontment ...
+func GeneralParametersToEnvirontment(appname, stage, path string, decryption bool) error {
+	svc := aws.GetSSM()
+	input := &ssm.GetParametersByPathInput{}
+	input.SetPath(path)
+	input.SetWithDecryption(decryption)
+	data, err := svc.GetParametersByPath(input)
+	if err != nil {
+		log.Println("Error: ", err)
+		return err
+	}
+	// fmt.Println("Data: ", data.String())
+	file := tool.Storage(stage, appname)
+	for _, i := range data.Parameters {
+		GenerateJSON(*i.Name, decryption, file)
+	}
+	return nil
+}
+
 // GenerateJSON ...
 func GenerateJSON(pathName string, decryption bool, file *os.File) (int, error) {
 	name := tool.GeneralSplit(pathName)
@@ -54,6 +73,14 @@ func GenerateJSON(pathName string, decryption bool, file *os.File) (int, error) 
 		format = name + "=$(aws ssm get-parameter --name " + pathName + " --query  \"Parameter.{Value:Value}\"| grep Value | awk -F '\"' '{print $4}')\n"
 
 	}
+	return file.Write([]byte(format))
+}
+
+// GenerateEnvirontment ...
+func GenerateEnvirontment(pathName, value string, decryption bool, file *os.File) (int, error) {
+	name := tool.GeneralSplit(pathName)
+	format := ""
+	format = name + "=" + value + "\n"
 	return file.Write([]byte(format))
 }
 

@@ -29,16 +29,24 @@ func GeneratePath() cli.Command {
 			Required:    true,
 		},
 		cli.StringFlag{
+			Name:        "result, r",
+			Usage:       "Result generate | default awk | .env ",
+			Destination: &Args.Type,
+			Required:    true,
+		},
+		cli.StringFlag{
 			Name:        "decrypt, d",
 			Usage:       "Decryption Option",
 			Destination: &Args.Decryption,
-			Required:    true,
 		},
 	}
 	command.Action = func(c *cli.Context) error {
 		decrypt := false
 		if Args.Decryption != "" {
 			decrypt = true
+		}
+		if Args.Type != "" {
+			return ssm.GeneralParametersToEnvirontment(Args.Name, Args.Stage, Args.Path, decrypt)
 		}
 		return ssm.GeneralParametersByPath(Args.Name, Args.Stage, Args.Path, decrypt)
 	}
