@@ -1,7 +1,7 @@
 package cli
 
 import (
-	"github.com/sofyan48/maklo/utils/ssm"
+	"github.com/sofyan48/maklo/libs/cmd"
 	"github.com/urfave/cli"
 )
 
@@ -24,7 +24,8 @@ func Generate() cli.Command {
 		},
 	}
 	command.Action = func(c *cli.Context) error {
-		return ssm.GenerateByTemplates(Args.Path, Args.Type)
+		cmdHandler := cmd.CMDLibraryHandler()
+		return cmdHandler.GenerateByTemplates(Args.Path, Args.Type)
 	}
 	return command
 }

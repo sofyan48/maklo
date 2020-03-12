@@ -9,6 +9,18 @@ import (
 	"github.com/aws/aws-sdk-go/service/ssm"
 )
 
+type AWSLibrary struct{}
+
+// AWSLibraryHandler ...
+func AWSLibraryHandler() *AWSLibrary {
+	return &AWSLibrary{}
+}
+
+// AWSLibraryInterface ...
+type AWSLibraryInterface interface {
+	GetSystemManagerStore() *ssm.SSM
+}
+
 func sessions() *aws.Config {
 	creds := credentials.NewStaticCredentials(
 		os.Getenv("AWS_ACCESS_KEY"),
@@ -18,7 +30,8 @@ func sessions() *aws.Config {
 	return cfgAws
 }
 
-func GetSSM() *ssm.SSM {
+// GetSystemManagerStore ...
+func (aws *AWSLibrary) GetSystemManagerStore() *ssm.SSM {
 	cfg := sessions()
 	return ssm.New(session.New(), cfg)
 }

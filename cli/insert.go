@@ -1,7 +1,7 @@
 package cli
 
 import (
-	"github.com/sofyan48/maklo/utils/ssm"
+	"github.com/sofyan48/maklo/libs/cmd"
 	"github.com/urfave/cli"
 )
 
@@ -33,7 +33,8 @@ func InsertParameter() cli.Command {
 		if Args.OverWrites != "" {
 			overwrites = true
 		}
-		return ssm.InsertParametersByPath(Args.TemplatePath, Args.Type, overwrites)
+		cmdHandler := cmd.CMDLibraryHandler()
+		return cmdHandler.InsertParametersByPath(Args.TemplatePath, Args.Type, overwrites)
 	}
 
 	return command

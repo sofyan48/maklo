@@ -1,7 +1,7 @@
 package cli
 
 import (
-	"github.com/sofyan48/maklo/utils/ssm"
+	"github.com/sofyan48/maklo/libs/cmd"
 	"github.com/urfave/cli"
 )
 
@@ -41,14 +41,16 @@ func GeneratePath() cli.Command {
 		},
 	}
 	command.Action = func(c *cli.Context) error {
+		cmdHandler := cmd.CMDLibraryHandler()
+
 		decrypt := false
 		if Args.Decryption != "" {
 			decrypt = true
 		}
 		if Args.Type != "" {
-			return ssm.GeneralParametersToEnvirontment(Args.Name, Args.Stage, Args.Path, decrypt)
+			return cmdHandler.GenerateParametersToEnvirontment(Args.Name, Args.Stage, Args.Path, decrypt)
 		}
-		return ssm.GeneralParametersByPath(Args.Name, Args.Stage, Args.Path, decrypt)
+		return cmdHandler.GenerateParametersByPath(Args.Name, Args.Stage, Args.Path, decrypt)
 	}
 
 	return command
