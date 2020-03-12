@@ -26,6 +26,5 @@ func Generate() cli.Command {
 	command.Action = func(c *cli.Context) error {
 		return ssm.GenerateByTemplates(Args.Path, Args.Type)
 	}
-
 	return command
 }

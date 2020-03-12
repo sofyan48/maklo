@@ -35,6 +35,7 @@ func AppCommands() *cli.App {
 	app.Commands = []cli.Command{
 		Generate(),
 		InsertParameter(),
+		GeneratePath(),
 	}
 	return app
 }
