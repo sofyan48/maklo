@@ -14,9 +14,10 @@ func (cmd *CMDLibrary) LoadEnvironment(path string) {
 
 // CreateEnvironment ...
 func (cmd *CMDLibrary) CreateEnvironment() {
-	err := cmd.Tools.CreateFolder(os.UserHomeDir() + "/.maklo/")
+	homePath, _ := os.UserHomeDir()
+	err := cmd.Tools.CreateFolder(homePath + "/.maklo/")
 	if err == nil {
-		fileName := os.UserHomeDir() + "/.maklo/environtment"
+		fileName := homePath + "/.maklo/environtment"
 		file, err := os.OpenFile(fileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0777)
 		if err != nil {
 			log.Println(err)

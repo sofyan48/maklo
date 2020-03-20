@@ -57,7 +57,8 @@ func initEnvirontment() {
 	cmdHandler := cmd.CMDLibraryHandler()
 	if Args.Environment == "" {
 		cmdHandler.CreateEnvironment()
-		cmdHandler.LoadEnvironment(os.UserHomeDir() + "/.maklo/environtment")
+		homePath, _ := os.UserHomeDir()
+		cmdHandler.LoadEnvironment(homePath + "/.maklo/environtment")
 		return
 	}
 	cmdHandler.LoadEnvironment(Args.Environment)

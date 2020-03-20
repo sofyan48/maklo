@@ -69,6 +69,7 @@ func (ssmtool *SSManager) InsertParameter(dataJSON []entity.InsertDataModels, ov
 		result, err := svc.PutParameter(inputFormat)
 		if err != nil {
 			log.Println("Not Uploaded Parameter: ", err)
+			return
 		}
 		log.Println("Uploaded Parameter: ", result)
 	}
